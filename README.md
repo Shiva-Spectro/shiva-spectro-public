@@ -42,6 +42,7 @@ libraries, default radius of the MILES search.
 
 - `doc/Shiva_Guide_utilisateur_2_1_4.docx`: user guide (in French).
 - `doc/Shiva_Documentation_Dereddening.docx`: documentation of the dereddening method.
+- `doc/Shiva_Documentation_Nebuleuses_Planetaires.docx`: documentation of the planetary nebula analysis (in French).
 - `RELEASES.txt`: change log of all versions.
 
 ## Credits and data
