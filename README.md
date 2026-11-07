@@ -4,9 +4,6 @@
 spectrography. It takes you from the raw images of a spectrograph to a calibrated, corrected and analysed
 spectrum, with methods of professional grade.
 
-Shiva is a Pro-Am collaboration with the Observatoire de la Cote d'Azur (Philippe Bendjoya, Eric Aristidi);
-the program is developed by the amateur astronomers Arnaud Ferial and Thierry Holer.
-
 This repository is the public area: compiled versions, documentation and change log. The source code is kept
 in a private repository.
 
