@@ -1,0 +1,109 @@
+SHIVA SPECTRO - RELEASES
+=========================
+Newest first. Each update of the code adds a line here (version, date, change).
+The move to Claude (analysis and restructuring of the code) dates from V2.0.2.
+
+V2.0.11 (2026-11-06/07)
+  - Reduce: optional dereddening (interstellar extinction, Cardelli-Clayton-Mathis 1989) in the Miles frame: E(B-V) and Rv entered by the user, applied after the instrumental response and the telluric correction; not applied in Pickles mode (the response then absorbs the colour of the target); DEREDDEN, EBV and RV keywords written, a spectrum already dereddened is refused. The corrected-spectrum plot shows Initial / Instrumental response / Dereddened (blue, orange, purple). Balmer decrement (Halpha/Hbeta -> E(B-V)) measured on the instrument-corrected spectrum, with a button that fills the dereddening field. An "Object type" list (star, nebula, galaxy, AGN, supernova, manual) sets Rv, the intrinsic Ha/Hb, shows the typical E(B-V) and how to obtain it, and shows the Balmer tools only when relevant.
+  - Calibrate: optional "Mask hot pixels" (threshold in robust sigmas of the master dark): the hot or saturated pixels of the master dark are replaced, in each dark-subtracted frame and BEFORE the alignment, by a linear interpolation along the dispersion axis (a saturated pixel gives 0 after dark subtraction).
+  - Calibrate: "Reject cosmics (1D)" case with a threshold (robust sigmas) and a counter: the existing rejection of narrow positive outliers in the extracted 1D spectrum can now be disabled or tuned.
+  - Default wavelength limits are two module-level globals, wlmin = 3500 and wlmax = 8000 Angstrom (Calibrate cut, Reduce UV cut of the reference, Calculate initial range); the class attributes are removed.
+  - FITS HISTORY: all lines are written by SpectrumModuleFrame.record_processing and only record real processing that modifies the spectrum (stack, hot pixels, extraction, wavelength calibration, response, telluric, dereddening, Calculate/Analyse operations). Loads, reads and exports are execution traces: console only.
+  - Reduce: "Dust Map" button (E(B-V) Calculation): reads the CSFD dust map (Chiang 2023, SFD corrected for the cosmic infrared background) from the file csfd_lib/csfd_ebv.fits of the reference library (HEALPix, RING, Galactic; read without healpy), at the target position (header RA/DEC or SIMBAD name). Value x 0.86 (CSFD_SCALE, SFD scale recalibrated by Schlafly & Finkbeiner 2011). Total Galactic reddening: an upper limit for a star.
+  - Reduce: three frames, each with its own Calibrate button: Pickles Reference, Miles Reference (response + telluric) and Dereddening. Dereddening works after the instrumental response if there is one, otherwise on the raw target spectrum; the Balmer decrement follows the same rule. After a Pickles calibration the Miles and Dereddening frames are greyed (the Pickles response absorbs the colour of the target) until a new target or Clear All.
+  - Search Miles Ref is a global function (search_miles_reference) used by Reduce and by the new menu entry next to Simbad: MILES stars within a radius of a SIMBAD object (default 10 deg, editable). One button: Select in Reduce (loads the star), Close in the menu (returns the selected star to the status bar and console).
+  - Spectrum Save (global sauvegarder_spectre_fits): the file type selected in the dialog decides the format: FITS Files, TXT Files (.txt added to the name), or FITS linear 1D (_L), which resamples to a linear grid at the current mean step and names the file *_L.fits (HISTORY line written). "Resampling to Linear 1D" is removed from Calculate; resample and pas_spectral are global functions.
+  - Reduce: Balmer decrement windows adapt to the spectral sampling and follow the line peak; negative E(B-V) shown in red with a warning; Reduce keeps its response when coming back from another module.
+  - Calibrate: the polynomial degree chosen for the wavelength fit is the one used by "Show calibrated spectrum" (it was reset to 3 first); right-click removal of a calibration point only within 5 screen pixels.
+  - Documentation (doc/): Release Notes files removed; user guide Shiva_Guide_utilisateur_2_0_11.docx (updated from 2.0.1: Reduce with Dereddening/Dust Map/Balmer, Miles search, save types, Calibrate changes, build appendix) and Shiva_Documentation_Maintenance.docx added. Shiva_Documentation_Dereddening.docx added (science paper on the principles of dereddening: CCM89, CSFD dust map, Balmer decrement, object types, limits, references).
+  - Home page text for Reduce shortened; module renamed "Instrumental Reduction, Telluric Correction and Dereddening".
+
+V2.0.10 (2026-11-05)
+  - Reduce: optional telluric-band correction (O2, H2O) from the reference star (checkbox "Correct telluric bands"): transmission measured on the reference, scaled by the air-mass ratio (AIRMASS), applied inside the bands only, limited to x5, with history and warnings.
+
+V2.0.9 (2026-11-05)
+  - Structure only (no behaviour change): the 28 functions used by a single module are now static methods of that class (Analyse, Calibrate, Calculate, Reduce, or the shared SpectrumWorkspace); the remaining global functions are grouped in sub-blocks; unused spectral_subtype removed; imports moved to the top of the file.
+
+V2.0.8 (2026-11-05)
+  - Code clean-up and structure only (no behaviour change): sorted/grouped imports, consistent section banners, dead banners removed, whitespace normalised.
+
+V2.0.7 (2026-11-05)
+  - Calibrate: right-click removes the nearest calibration point (screen-space tolerance, no duplicates, calibration-file points not re-added by Show/Update 1D); the global_ variables also carry the last loaded/saved file name (global_filename) and the module that produced them (global_origin).
+
+V2.0.6 (2026-11-05)
+  - Spectrum hand-over between modules: the global_ variables are the ONLY channel. Save (sauvegarder_spectre_fits) and Load (charger_spectrum_fits) fill them with the spectrum saved/loaded; nothing else publishes. A module entered from another one shows the global_ spectrum (sync_from_globals); Calculate no longer reads Reduce/Calibrate pages and Analysis no longer receives titles/flags from Calculate. Pages are packed only once built (no redraw flash). Capital accents removed from the Classify Star texts; global functions grouped under "Global Functions".
+
+V2.0.5 (2026-11-05)
+  - Tk dialogs in ASCII: Balmer line names H-alpha, H-beta... and "Angstrom" instead of Greek letters and the angstrom sign
+    (not rendered by every Linux Tk font): Balmer calibration instruction, "Line not found" message, manual wavelength prompt.
+
+V2.0.4 (2026-11-04/05)
+  - Calibration: the residual plot uses the same autoscaled vertical scale in the "bounds" and "manual" modes
+    (the former fixed +/-0.5 px window made the two modes look different).
+
+V2.0.3 (2026-11-04)
+  - "Save 2D stack" now writes the RAW stack (master dark not subtracted).
+  - Analysis: Files > Save spectra... (one file, or one FITS per loaded spectrum).
+  - Balmer calibration instruction written with Greek letter names (H-alpha ...), made ASCII again in V2.0.5.
+
+V2.0.2 (2026-11-04) - FIRST VERSION ANALYSED AND RESTRUCTURED WITH CLAUDE
+  - review fixes: consistent extraction windows, validated wavelength solution (true RMS, degrees of freedom, line-centre refinement), robust trace, masked/clipped spline fits for the instrumental response and continuum, air/vacuum-aware redshift with centroid and uncertainty, line-flux and EW uncertainties, stale shift/add cache fix, EXPTIME guards, linear resampling.
+
+V2.0.2 - review notes (summary of the former French Release Notes, now replaced by the documentation in doc/)
+  - Extraction: profile, background and extraction use the same windows centred on round(trace); one-pixel offset and crash near the edge fixed.
+  - Negative values kept; only non-positive edge pixels are trimmed. Cosmic-ray rejection no longer touches lines at least 3 px wide.
+  - Calibration: true RMS with degrees of freedom (A and km/s); exact polynomial refused; non-monotonic solution reported;
+    Balmer lock only if the fit succeeds; each click replaced by a Gaussian line-centre fit; same scales for bounds and manual plots.
+  - Trace: find_trace always returns; no negative weights; no division by zero; linear extrapolation at the edges;
+    sky background subtracted by default (trace offset 3.4 px -> 0.16 px in the test); background bands start just after the aperture.
+  - Shift-and-add cache depends on files and dark; missing EXPTIME no longer crashes; flat subtracted from dark when exposures match.
+  - Resampling is linear at the exact requested step and the FITS history tells the truth.
+  - Instrumental response and continuum: Balmer, Ca II and telluric lines (incl. O2 A band) excluded with iterative clipping.
+  - Analysis continuum clipped on absorption and emission lines. Redshift: air/vacuum rest wavelengths, fitted line centre with
+    uncertainty, barycentric correction when the header allows it. Uncertainties on line fluxes, PN ratios and equivalent widths.
+  - Stellar classification: smoothing before down-sampling, 150 A edge margin. Pickles circularity recorded in the FITS header.
+  - Balmer-line instruction text in ASCII; graphs correct on entering a module; global_ variables only fed by Save and Load.
+
+PRE-GITHUB HISTORY (files found on the PC, Documents/DUAO/Shiva; dates are file dates).
+Up to V2.0.0 the code was written without Claude. From V2.0.2 onwards, Claude analyses the code and restructures it.
+Entries below were derived by comparing the files (functions and classes added or removed), not from author notes.
+
+V2.0.0 (2026-11-04)
+  - Restructured into modules Analyse_Spectrum / Calculate_Spectrum / Calibration / Instr_Reduction; Analysis_Spectrum,
+    AnalysisComparison_Spectrum, Comparaison_Spectrum and Cut_and_Smooth_Spectrum removed; application_directory,
+    application_resource and clear_all added.
+V1.5.8 (2026-10-31)  Calculate_Spectrum and SpectrumWorkspace classes; second-spectrum export; wavelength tick formatting.
+V1.5.7 (2026-10-28)  Analysis comparison module: continuum, division, classification, spectral markers, result export (+26 functions).
+V1.5.6 (2026-10-28)  LoadedSpectrum and CalibrationAxes classes, accept_spectrum, processing header export (+33 functions).
+V1.5.5 (2026-10-28)  Pane sizes and initialisation.
+V1.5.4 (2026-10-27)  Current header display, title update.
+V1.5.3 (2026-10-27)  Minor changes.
+V1.5.2 (2026-10-27)  SpectrumModuleFrame base class; object name refresh.
+V1.5.1 (2026-10-27)  Files and plots menus (FileAction).
+V1.5   (2026-10-27)  Application shell: home page, module switching, status bar.
+V1.4   (2026-10-27)  Instr_Reduction_Spectrum replaces Miles_Reduction_Spectrum; FITS load/save as global functions
+                     (charger_spectrum_fits, sauvegarder_spectre_fits); pas_spectral.
+V1.3   (file date 2026-10-31)  Same structure as V1.3bak. V1.3bak (2026-06-27): align_cube replaces shiftadd.
+V1.2b, V1.2 (2026-06-21)  Minor changes.
+V1.1d  (2026-06-21)  Stack_Images, doStack, profile_trace, save_spectrum_stack replace gaussian_trace and recentre_ligne.
+V1.1c  (2026-06-20), V1.1 (2026-06-18)  Minor changes.
+V1.1b  (2026-06-16)  Cut_and_Smooth_Spectrum module, spectrum_calculation, plot and spectrum exports.
+V1.0   (2026-06-12)  File contains null bytes (cannot be parsed); kept as found.
+V0.5   (2026-05-12)  Calibrated spectrum plot, update_plot, validation step.
+V0.4 / V0.4.2 (2026-05-07)  Miles_Reduction_Spectrum module; plot and spectrum exports (identical files).
+V0.3 / V0.3.2 (2026-05-05)  Comparaison_Spectrum module (two spectra, continuum, smoothing, export) (identical files).
+V0.2 / V0.2.2 (2026-05-04)  PanZoomController; home-directory menu (identical files).
+V0.1 / V0.1.2 (2026-05-04)  First version (identical files).
+
+OCA initial modules (archive/oca_initial_modules, file dates April-May 2026)
+  - spectro_GUI_v34 (04-10), v35 (04-22), v36 (05-03: save_plot added): spectrum display and analysis GUI.
+  - spectro affichage avec raiesv32 (04-19): spectrum display with lines.
+  - GUI_calib_spectre_reference_v9_fixed (04-11), v9_2 (04-20: classify_star, line_strength, spectral_subtype),
+    v9_3 (04-21: classify_np, line finding, right-click), v9_4 (04-22: keyboard modifiers), v9_5 / bis / c (04-24, 05-01),
+    v10 (05-02): wavelength calibration GUI with reference spectrum.
+  - comparaison dun spectre a une serie dautres (04-24), Codes Morts (05-07, dead code, not parsable).
+
+Notes
+  - Versions 2.0.3 to 2.0.5 exist only from working sessions (not on the PC); kept in archive/v1.5-v2.1.
+  - Icons: shiva_bronze.ico and shiva_bronze.png are used by the program (kept next to the script);
+    older icons are in archive/old_icons. Build commands: build/Compil Shiva.txt and build/Shiva.spec.
