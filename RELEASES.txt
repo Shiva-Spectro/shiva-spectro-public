@@ -7,6 +7,7 @@ Numbering: V2.0.9 was compiled and distributed as 2.1.0; the following versions 
 V2.2.0 (2026-11-08)
   - New version; starting point = V2.1.5 (kept in archive/v1.5-v2.1/). V2.1.5 was never compiled: its changes (below) are part of this version, which is the first one compiled after the planetary nebula validation and the code review.
   - Validation on real data before compilation: planetary nebulae IC 4593, M57, NGC 6210, NGC 6572 and NGC 1535 (calibration with nebular lines, instrumental response, Balmer decrement, dereddening, Analyse NP report).
+  - New English user guide (doc/Shiva_Guide_User_2_2_0_EN.docx, made from the French guide by doc/make_english_guide.py and published by the sync step). French guide: the text about the removed 1D cosmic-ray rejection (Reject cosmics, Cosmics counter) is replaced by the description of the current behaviour.
   - Code review, scikit-learn removed (NumPy RANSAC), docstrings everywhere, documentation and user guide renumbered 2.2.0: see the V2.1.5 entries below.
 
 V2.1.5 (2026-11-07)
