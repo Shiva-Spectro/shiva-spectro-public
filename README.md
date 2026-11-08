@@ -25,10 +25,10 @@ in a private repository.
 ## Download and installation
 
 Compiled versions are published as **Releases** of this repository (see the *Releases* page, current version
-2.1.5):
+2.2.0):
 
-- `Shiva_V2.1.5_Windows.zip`: unzip, then run `Shiva\Shiva.exe`.
-- `Shiva_V2.1.5_Linux.tar.gz`: unpack, then run `Shiva/Shiva`.
+- `Shiva_V2.2.0_Windows.zip`: unzip, then run `Shiva\Shiva.exe`.
+- `Shiva_V2.2.0_Linux.tar.gz`: unpack, then run `Shiva/Shiva`.
 
 Each archive holds the program, the reference libraries and databases (`_Reduction_Instrumentale`: MILES,
 Pickles, CSFD dust map, solar spectrum) and the settings file `shiva_config.ini`. No installation of Python is
@@ -40,7 +40,7 @@ libraries, default radius of the MILES search.
 
 ## Documentation
 
-- `doc/Shiva_Guide_utilisateur_2_1_5.docx`: user guide (in French).
+- `doc/Shiva_Guide_utilisateur_2_2_0.docx`: user guide (in French); `doc/Shiva_Guide_User_2_2_0_EN.docx`: the same guide in English.
 - `doc/Shiva_Documentation_Dereddening_EN.docx`: documentation of the dereddening method (English); French version: `doc/Shiva_Documentation_Dereddening.docx`.
 - `doc/Shiva_Documentation_Planetary_Nebulae_EN.docx`: documentation of the planetary nebula analysis (English); French version: `doc/Shiva_Documentation_Nebuleuses_Planetaires.docx`.
 - `RELEASES.txt`: change log of all versions.
